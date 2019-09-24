@@ -5,6 +5,7 @@ import com.fasterxml.jackson.databind.JsonNode;
 import org.metadatacenter.config.CedarConfig;
 import org.metadatacenter.constant.CustomHttpConstants;
 import org.metadatacenter.constant.HttpConstants;
+import org.metadatacenter.constant.LinkedData;
 import org.metadatacenter.error.CedarErrorKey;
 import org.metadatacenter.exception.ArtifactServerResourceNotFoundException;
 import org.metadatacenter.model.CedarResourceType;
@@ -64,7 +65,8 @@ public class TemplateFieldsResource extends AbstractArtifactServerResource {
 
     JsonNode templateField = c.request().getRequestBody().asJson();
 
-    enforceMandatoryNullOrMissingId(templateField, CedarResourceType.FIELD, CedarErrorKey.TEMPLATE_FIELD_NOT_CREATED);
+    // This is checked on resource:
+    // enforceMandatoryNullOrMissingId(templateField, CedarResourceType.FIELD, CedarErrorKey.TEMPLATE_FIELD_NOT_CREATED);
     enforceMandatoryName(templateField, CedarResourceType.FIELD, CedarErrorKey.TEMPLATE_FIELD_NOT_CREATED);
 
     ProvenanceInfo pi = provenanceUtil.build(c.getCedarUser());
@@ -92,7 +94,7 @@ public class TemplateFieldsResource extends AbstractArtifactServerResource {
     try {
       JsonNode createdTemplateField = templateFieldService.createTemplateField(templateField);
       MongoUtils.removeIdField(createdTemplateField);
-      String id = createdTemplateField.get("@id").asText();
+      String id = createdTemplateField.get(LinkedData.ID).asText();
       URI createdFieldUri = CedarUrlUtil.getIdURI(uriInfo, id);
       return CedarResponse.created(createdFieldUri)
           .header(CustomHttpConstants.HEADER_CEDAR_VALIDATION_STATUS, CedarValidationReport.IS_VALID)

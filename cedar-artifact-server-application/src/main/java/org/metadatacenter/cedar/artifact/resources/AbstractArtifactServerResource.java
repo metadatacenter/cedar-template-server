@@ -42,13 +42,13 @@ public class AbstractArtifactServerResource extends CedarMicroserviceResource {
   }
 
   protected void setProvenanceAndId(CedarResourceType cedarResourceType, JsonNode element, ProvenanceInfo pi) {
-    if ((element.get("@id") != null) && (!NULL.equals(element.get("@id").getNodeType()))) {
+    if ((element.get(LinkedData.ID) != null) && (!NULL.equals(element.get(LinkedData.ID).getNodeType()))) {
       throw new IllegalArgumentException("Specifying @id for new objects is not allowed");
     }
     provenanceUtil.addProvenanceInfo(element, pi);
 
     String id = linkedDataUtil.buildNewLinkedDataId(cedarResourceType);
-    ((ObjectNode) element).put("@id", id);
+    ((ObjectNode) element).put(LinkedData.ID, id);
 
     // add template-element-instance ids (only for instances)
     linkedDataUtil.addElementInstanceIds(element, cedarResourceType);

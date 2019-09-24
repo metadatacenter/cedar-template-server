@@ -71,7 +71,8 @@ public class TemplatesResource extends AbstractArtifactServerResource {
 
     JsonNode template = c.request().getRequestBody().asJson();
 
-    enforceMandatoryNullOrMissingId(template, CedarResourceType.TEMPLATE, CedarErrorKey.TEMPLATE_NOT_CREATED);
+    // This is checked on resource:
+    // enforceMandatoryNullOrMissingId(template, CedarResourceType.TEMPLATE, CedarErrorKey.TEMPLATE_NOT_CREATED);
     enforceMandatoryName(template, CedarResourceType.TEMPLATE, CedarErrorKey.TEMPLATE_NOT_CREATED);
 
     ProvenanceInfo pi = provenanceUtil.build(c.getCedarUser());
